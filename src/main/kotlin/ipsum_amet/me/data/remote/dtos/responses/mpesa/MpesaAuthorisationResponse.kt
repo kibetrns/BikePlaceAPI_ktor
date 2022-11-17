@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthorisationResponse(
+data class MpesaAuthorisationResponse(
     @SerialName("access_token")
     val accessToken: String,
     @SerialName("expires_in")

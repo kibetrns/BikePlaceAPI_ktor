@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class STKPushAsyncResponse(
+data class MpesaSTKPushAsyncResponse(
     @SerialName("Body")
     val body: Body
 )

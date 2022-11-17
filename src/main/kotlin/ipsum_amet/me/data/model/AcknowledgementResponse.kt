@@ -1,4 +1,4 @@
-package ipsum_amet.me.data.remote.dtos.model
+package ipsum_amet.me.data.model
 
 
 import kotlinx.serialization.SerialName

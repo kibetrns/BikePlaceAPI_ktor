@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class STKPushSyncResponse(
+data class MpesaSTKPushSyncResponse(
     @SerialName("CheckoutRequestID")
     val checkoutRequestID: String,
     @SerialName("CustomerMessage")

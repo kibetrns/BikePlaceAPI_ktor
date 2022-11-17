@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MpesaRegisterURLResponse(
+data class MpesaC2BRegisterURLResponse(
     @SerialName("OriginatorCoversationID")
     val originatorCoversationID: String,
     @SerialName("ResponseCode")
