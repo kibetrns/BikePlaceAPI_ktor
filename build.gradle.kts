@@ -71,4 +71,6 @@ dependencies {
     //Apache Commons Lang3
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
+    //Kotlinx Datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 }
