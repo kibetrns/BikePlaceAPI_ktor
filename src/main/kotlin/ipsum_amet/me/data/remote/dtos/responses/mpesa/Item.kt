@@ -9,5 +9,5 @@ data class Item(
     @SerialName("Name")
     val name: String,
     @SerialName("Value")
-    val value: Long
+    val value: String?
 )

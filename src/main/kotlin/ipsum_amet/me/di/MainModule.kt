@@ -12,29 +12,31 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
-import ipsum_amet.me.Util.DATABASE_NAME
-import ipsum_amet.me.service.AirtelMoneyService
-import ipsum_amet.me.service.AirtelMoneyServiceImp
+import ipsum_amet.me.Util.DB_NAME
+import ipsum_amet.me.data.repository.MpesaPaymentDataSource
+import ipsum_amet.me.data.repository.MpesaPaymentDataSourceImpl
 import ipsum_amet.me.service.MpesaService
 import ipsum_amet.me.service.MpesaServiceImpl
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
 
 val mainModule = module(createdAtStart = true) {
     single { provideDatabase() }
+
     single(named("mpesaClient")) { provideDefaultMpesaHttpClient() }
-    single(named("airtelMoneyClient")) { provideDefaultAirtelMoneyHttpClient() }
+
+    single<MpesaPaymentDataSource> {
+        MpesaPaymentDataSourceImpl(get())
+    }
 
     single<MpesaService> {
-        MpesaServiceImpl(get(named("mpesaClient")))
-    }
-    single<AirtelMoneyService> {
-        AirtelMoneyServiceImp(get(named("airtelMoneyClient")))
+        MpesaServiceImpl(get(named("mpesaClient")),get())
     }
 }
 
@@ -69,11 +71,12 @@ private fun provideDefaultMpesaHttpClient(): HttpClient {
     }
 }
 
-private fun provideDatabase() {
-    KMongo.createClient()
-        .coroutine
-        .getDatabase(DATABASE_NAME)
+private fun provideDatabase(): CoroutineDatabase {
+    val password = System.getenv("ATLAS_CLUSTER_PW")
+    return KMongo.createClient("mongodb+srv://IPSUM_AMET:$password@bikeplaceapp.91afp.mongodb.net/$DB_NAME?retryWrites=true&w=majority").coroutine
+        .getDatabase(DB_NAME)
 }
+
 
 @OptIn(ExperimentalSerializationApi::class)
 private fun provideBearerHttpClient(
@@ -98,19 +101,7 @@ private fun provideBearerHttpClient(
     }
 }
 
-@OptIn(ExperimentalSerializationApi::class)
-fun provideDefaultAirtelMoneyHttpClient(): HttpClient {
-    return HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-                explicitNulls = false
-            })
-        }
-    }
-}
+
 
 
 

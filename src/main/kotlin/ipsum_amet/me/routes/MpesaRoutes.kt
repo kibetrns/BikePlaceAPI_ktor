@@ -7,7 +7,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ipsum_amet.me.Util.generateMpesaExpressPassword
 import ipsum_amet.me.Util.generateTimeStamp
-import ipsum_amet.me.data.model.AcknowledgementResponse
+import ipsum_amet.me.data.models.AcknowledgementResponse
+import ipsum_amet.me.data.models.Status
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaExternalSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaRegisterUrlRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaSTKPushRequest
@@ -52,7 +53,7 @@ fun Route.retrieveRegistrationUrl(application: Application, mPesaService: MpesaS
 
 //fun Route.validateTransaction
 
-fun Route.mpesaExpressTransactionResults(application: Application, mPesaService: MpesaService) {
+fun Route.mpesaExpressTransactionRequest(application: Application, mPesaService: MpesaService) {
     post("api/v1/mobile-payment/saf/stk-transaction-request") {
 
         val externalMpesaRequest = call.receive<MpesaExternalSTKPushRequest>()
@@ -92,8 +93,26 @@ fun Route.acknowledgeMpesaExpressResponse(application: Application, mPesaService
     post("api/v1/mobile-payment/saf/stk-transaction-result") {
         println("******** Mpesa Express Async. Response ********")
         try {
-            call.respond(HttpStatusCode.OK, AcknowledgementResponse("Success"))
-            call.receive<MpesaSTKPushAsyncResponse>()
+
+            val mpesaExpressAsyncResponse = call.receive<MpesaSTKPushAsyncResponse>()
+
+            val saved = mPesaService.insertAsyncResponse(mpesaExpressAsyncResponse)
+
+            if (saved) {
+                call.respond(
+                    HttpStatusCode.Created,
+                    AcknowledgementResponse(Status.SUCCESS, "Transaction Results saved To Database")
+                )
+            } else {
+                call.respond(
+                    HttpStatusCode.Conflict,
+                    AcknowledgementResponse(Status.FAILED, "Transaction Result  NOT Saved To Database")
+                )
+                return@post
+
+            }
+            //call.respond(HttpStatusCode.OK, AcknowledgementResponse("Success"))
+
         } catch (ex: Exception) {
             application.log.error(ex.localizedMessage)
             application.log.error(ex.stackTraceToString())

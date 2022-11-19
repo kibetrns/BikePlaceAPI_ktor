@@ -5,13 +5,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import ipsum_amet.me.routes.*
-import ipsum_amet.me.service.AirtelMoneyService
 import ipsum_amet.me.service.MpesaService
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
     val mPesaService by inject<MpesaService>()
-    val airtelMoneyService by inject<AirtelMoneyService>()
+    //val airtelMoneyService by inject<AirtelMoneyService>()
 
     routing {
         get("/") {
@@ -19,10 +18,10 @@ fun Application.configureRouting() {
         }
         retrieveAuthToken(mPesaService, application)
         retrieveRegistrationUrl(application, mPesaService)
-        mpesaExpressTransactionResults(application, mPesaService)
+        mpesaExpressTransactionRequest(application, mPesaService)
         acknowledgeMpesaExpressResponse(application, mPesaService)
 
-        retrieveAirtelMoneyAuthToken(airtelMoneyService, application)
+        //retrieveAirtelMoneyAuthToken(airtelMoneyService, application)
 
         trial()
     }

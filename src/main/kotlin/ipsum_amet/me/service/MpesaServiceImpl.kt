@@ -17,13 +17,18 @@ import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.responses.*
 import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaAuthorisationResponse
 import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaC2BRegisterURLResponse
+import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaSTKPushAsyncResponse
 import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaSTKPushSyncResponse
+import ipsum_amet.me.data.repository.MpesaPaymentDataSource
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 
-class MpesaServiceImpl(private val client: HttpClient) : MpesaService {
+class MpesaServiceImpl(
+    private val client: HttpClient,
+    private val repository: MpesaPaymentDataSource
+    ) : MpesaService {
     private val bearerTokenStorage = mutableListOf<BearerTokens>()
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -82,6 +87,11 @@ class MpesaServiceImpl(private val client: HttpClient) : MpesaService {
             contentType(ContentType.Application.Json)
             setBody(sTKPushRequest)
         }.body()
+    }
+
+    override suspend fun insertAsyncResponse(mpesaSTKPushAsyncResponse: MpesaSTKPushAsyncResponse): Boolean {
+        return repository.insertMpesaPaymentInfo(mpesaSTKPushAsyncResponse)
+
     }
 
 //"https://en9u0gqzwo9t5.x.pipedream.net"
