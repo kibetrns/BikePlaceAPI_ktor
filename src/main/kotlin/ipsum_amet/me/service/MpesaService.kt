@@ -1,6 +1,6 @@
 package ipsum_amet.me.service
 
-import ipsum_amet.me.data.models.MpesaPaymentInfo
+import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaExternalSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaRegisterUrlRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.responses.*
@@ -18,7 +18,10 @@ interface MpesaService {
 
     //suspend fun receiveMpesaExpressAsyncResponse(stkPushSyncResponse: STKPushSyncResponse) : STKPushAsyncResponse
 
-    suspend fun insertAsyncResponse(mpesaSTKPushAsyncResponse: MpesaSTKPushAsyncResponse): Boolean
+    suspend fun insertAsyncResponse(
+        mpesaSTKPushAsyncResponse: MpesaSTKPushAsyncResponse,
+        mpesaExternalSTKPushRequest: MpesaExternalSTKPushRequest
+    ): Boolean
 
     suspend fun getPosts(): List<Post>
 }

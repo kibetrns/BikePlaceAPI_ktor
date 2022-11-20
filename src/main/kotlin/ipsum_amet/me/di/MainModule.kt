@@ -102,7 +102,17 @@ private fun provideBearerHttpClient(
 }
 
 
-
+data class DummyOrder(
+    val orderDate: String = "14th Jul 2020, 20:16",
+    val dropOffLocation: String = "Ilkemi Triangle, Turkana",
+    val orderId: String = "QFK8ZQIEG4",
+    val leaseActivation: String = "05 Aug 20, 10:00",
+    val leaseExpiry: String = "08: Aug 20, 10:00",
+    val userName:String = "Aquinas Dojo",
+    val product:String = "Orange Hue",
+    val price: String = "KES 333",
+    val returnStatus: String = "Pending"
+)
 
 
 

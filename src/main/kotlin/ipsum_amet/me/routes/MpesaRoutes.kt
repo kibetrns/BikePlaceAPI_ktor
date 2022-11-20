@@ -14,10 +14,11 @@ import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaRegisterUrlRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaSTKPushAsyncResponse
 import ipsum_amet.me.service.MpesaService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
-val scope = CoroutineScope(Dispatchers.IO)
+var externalSTKPushRequest1: MpesaExternalSTKPushRequest? = null
+suspend fun updateExternalSTKPushRequest1(externalSTKPushRequest: MpesaExternalSTKPushRequest) {
+    externalSTKPushRequest1 = externalSTKPushRequest
+}
 
 fun Route.retrieveAuthToken(mPesaService: MpesaService, application: Application) {
 
@@ -58,6 +59,8 @@ fun Route.mpesaExpressTransactionRequest(application: Application, mPesaService:
 
         val externalMpesaRequest = call.receive<MpesaExternalSTKPushRequest>()
 
+        updateExternalSTKPushRequest1(externalMpesaRequest)
+
         val timeStamp = generateTimeStamp()
         val mpesaExpressPassword = generateMpesaExpressPassword(
             shortKey = application.environment.config.property("mpesa.daraja.mpesa-express.business-short-code").getString(),
@@ -71,10 +74,10 @@ fun Route.mpesaExpressTransactionRequest(application: Application, mPesaService:
             amount = externalMpesaRequest.amount,
             businessShortCode = application.environment.config.property("mpesa.daraja.mpesa-express.business-short-code").getString().toInt(),
             callBackURL = application.environment.config.property("mpesa.daraja.mpesa-express.callback-URL").getString(),
-            partyA = externalMpesaRequest.phoneNumber,
+            partyA = externalMpesaRequest.userPhoneNumber,
             partyB = application.environment.config.property("mpesa.daraja.mpesa-express.business-short-code").getString().toInt(),
             password = mpesaExpressPassword,
-            phoneNumber = externalMpesaRequest.phoneNumber,
+            phoneNumber = externalMpesaRequest.userPhoneNumber,
             timestamp = timeStamp,
             transactionDesc = application.environment.config.property("mpesa.daraja.mpesa-express.transaction-desc").getString(),
             transactionType = application.environment.config.property("mpesa.daraja.mpesa-express.transaction-type").getString()
@@ -96,9 +99,11 @@ fun Route.acknowledgeMpesaExpressResponse(application: Application, mPesaService
 
             val mpesaExpressAsyncResponse = call.receive<MpesaSTKPushAsyncResponse>()
 
-            val saved = mPesaService.insertAsyncResponse(mpesaExpressAsyncResponse)
+            val saved = externalSTKPushRequest1?.let { mpesaExternalSTKPushRequest: MpesaExternalSTKPushRequest ->
+                mPesaService.insertAsyncResponse(mpesaExpressAsyncResponse, mpesaExternalSTKPushRequest)
+            }
 
-            if (saved) {
+            if (saved == true) {
                 call.respond(
                     HttpStatusCode.Created,
                     AcknowledgementResponse(Status.SUCCESS, "Transaction Results saved To Database")
@@ -109,7 +114,6 @@ fun Route.acknowledgeMpesaExpressResponse(application: Application, mPesaService
                     AcknowledgementResponse(Status.FAILED, "Transaction Result  NOT Saved To Database")
                 )
                 return@post
-
             }
             //call.respond(HttpStatusCode.OK, AcknowledgementResponse("Success"))
 

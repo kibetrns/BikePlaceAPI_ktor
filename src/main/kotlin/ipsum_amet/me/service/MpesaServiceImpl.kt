@@ -12,6 +12,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import ipsum_amet.me.Util.MpesaEndpoints
+import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaExternalSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaRegisterUrlRequest
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.responses.*
@@ -89,8 +90,11 @@ class MpesaServiceImpl(
         }.body()
     }
 
-    override suspend fun insertAsyncResponse(mpesaSTKPushAsyncResponse: MpesaSTKPushAsyncResponse): Boolean {
-        return repository.insertMpesaPaymentInfo(mpesaSTKPushAsyncResponse)
+    override suspend fun insertAsyncResponse(
+        mpesaSTKPushAsyncResponse: MpesaSTKPushAsyncResponse,
+        mpesaExternalSTKPushRequest: MpesaExternalSTKPushRequest
+    ): Boolean {
+        return repository.insertMpesaPaymentInfo(mpesaSTKPushAsyncResponse,mpesaExternalSTKPushRequest)
 
     }
 
