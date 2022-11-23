@@ -19,6 +19,8 @@ data class MpesaExternalSTKPushRequest(
     val bikeLeaseExpiry: String,
     @SerialName("UserName")
     val userName: String,
+    @SerialName("UserId")
+    val userId: String,
     @SerialName("BikeId")
     val bikeId: String,
     @SerialName("BikeName")

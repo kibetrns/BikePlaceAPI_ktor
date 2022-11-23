@@ -9,12 +9,17 @@ import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.http.auth.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
 import ipsum_amet.me.Util.DB_NAME
+import ipsum_amet.me.data.repository.BookingDataSourceImpl
+import ipsum_amet.me.data.repository.BookingInfoDataSource
 import ipsum_amet.me.data.repository.MpesaPaymentDataSource
 import ipsum_amet.me.data.repository.MpesaPaymentDataSourceImpl
+import ipsum_amet.me.service.BookingsInfoService
+import ipsum_amet.me.service.BookingsInfoServiceImpl
 import ipsum_amet.me.service.MpesaService
 import ipsum_amet.me.service.MpesaServiceImpl
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -30,14 +35,24 @@ val mainModule = module(createdAtStart = true) {
     single { provideDatabase() }
 
     single(named("mpesaClient")) { provideDefaultMpesaHttpClient() }
+    single(named("normalClient")) { provideNormalHttpClient() }
 
     single<MpesaPaymentDataSource> {
         MpesaPaymentDataSourceImpl(get())
     }
 
+    single<BookingInfoDataSource> {
+        BookingDataSourceImpl(get())
+    }
+
     single<MpesaService> {
         MpesaServiceImpl(get(named("mpesaClient")),get())
     }
+
+    single<BookingsInfoService> {
+        BookingsInfoServiceImpl(get())
+    }
+
 }
 
 
@@ -67,6 +82,20 @@ private fun provideDefaultMpesaHttpClient(): HttpClient {
                     )
                 }
             }
+        }
+    }
+}
+
+private fun provideNormalHttpClient(): HttpClient {
+    return HttpClient(CIO) {
+
+        install(ContentNegotiation) {
+            json(Json {
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+                explicitNulls = false
+            })
         }
     }
 }

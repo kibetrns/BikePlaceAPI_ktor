@@ -24,5 +24,7 @@ fun generateTimeStamp(): String {
     return SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(Date())
 }
 
+//"https://4afd-41-89-227-170.eu.ngrok.io/api/v1/mobile-payment/saf/stk-transaction-result"
+
 
 

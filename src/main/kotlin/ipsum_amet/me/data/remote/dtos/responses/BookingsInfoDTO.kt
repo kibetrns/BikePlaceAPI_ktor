@@ -1,11 +1,12 @@
-package ipsum_amet.me.data.models
+package ipsum_amet.me.data.remote.dtos.responses
 
-import ipsum_amet.me.data.remote.dtos.responses.BookingsInfoDTO
-import kotlinx.datetime.toKotlinLocalDateTime
-import java.time.LocalDateTime
+import ipsum_amet.me.data.models.BookingsInfo
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.serialization.Serializable
 
-
-data class BookingsInfo(
+@Serializable
+data class BookingsInfoDTO(
     val bookingId: String,
     val dateBookingMade: LocalDateTime,
     var bikeDropOffLocation: String?,
@@ -19,19 +20,20 @@ data class BookingsInfo(
     val bikeReturnStatus: String,
     val userPhoneNumber: Long
 )
-fun BookingsInfo.toDTO() : BookingsInfoDTO {
-    return BookingsInfoDTO(
+fun BookingsInfoDTO.toBookingsInfo(): BookingsInfo {
+    return BookingsInfo(
         bookingId,
-        dateBookingMade.toKotlinLocalDateTime(),
+        dateBookingMade.toJavaLocalDateTime(),
         bikeDropOffLocation,
-        bikeLeaseActivation.toKotlinLocalDateTime(),
-        bikeLeaseExpiry.toKotlinLocalDateTime(),
+        bikeLeaseActivation.toJavaLocalDateTime(),
+        bikeLeaseExpiry.toJavaLocalDateTime(),
         userName,
         userId,
         bikeId,
         bikeName,
         amount,
         bikeReturnStatus,
-        userPhoneNumber,
+        userPhoneNumber
     )
+
 }

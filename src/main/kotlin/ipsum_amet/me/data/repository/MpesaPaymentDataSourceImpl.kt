@@ -2,7 +2,6 @@ package ipsum_amet.me.data.repository
 import ipsum_amet.me.data.models.BookingsInfo
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaExternalSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaSTKPushAsyncResponse
-import kotlinx.datetime.toJavaLocalDateTime
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
@@ -37,6 +36,7 @@ class MpesaPaymentDataSourceImpl(
                     DateTimeFormatter.ofPattern("yyyyMMddHHmm")
                 ),
                 userName = mpesaExternalSTKPushRequest.userName,
+                userId = mpesaExternalSTKPushRequest.userId,
                 bikeId = mpesaExternalSTKPushRequest.bikeId,
                 bikeName = mpesaExternalSTKPushRequest.bikeName,
                 amount = mpesaSTKPushAsyncResponse.body.stkCallback.callbackMetadata.item[0].value!!.toDouble(),
@@ -62,6 +62,7 @@ class MpesaPaymentDataSourceImpl(
                         DateTimeFormatter.ofPattern("yyyyMMddHHmm")
                     ),
                     userName = mpesaExternalSTKPushRequest.userName,
+                    userId = mpesaExternalSTKPushRequest.userId,
                     bikeId = mpesaExternalSTKPushRequest.bikeId,
                     bikeName = mpesaExternalSTKPushRequest.bikeName,
                     amount = mpesaSTKPushAsyncResponse.body.stkCallback.callbackMetadata.item[0].value!!.toDouble(),

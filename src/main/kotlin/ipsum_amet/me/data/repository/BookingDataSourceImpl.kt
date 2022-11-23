@@ -1,13 +1,24 @@
 package ipsum_amet.me.data.repository
 
 import ipsum_amet.me.data.models.BookingsInfo
+import ipsum_amet.me.data.models.toDTO
+import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
+import org.slf4j.LoggerFactory
 
-class BookingDataSourceImpl : BookingInfoDataSource {
-    override fun getBookingInfoByUser(userNumber: Long): BookingsInfo {
-        TODO("Not yet implemented")
+class BookingDataSourceImpl(
+    db: CoroutineDatabase
+) : BookingInfoDataSource {
+
+    private val bookingsInfoCollection = db.getCollection<BookingsInfo>()
+    val log = LoggerFactory.getLogger(BookingDataSourceImpl::class.java)
+
+    override suspend fun getBookingInfoByUser(userId: String): List<BookingsInfo> {
+        return bookingsInfoCollection.find(BookingsInfo::userId eq userId).toList()
     }
 
-    override fun getBookingInfoByMpesaReceiptNumber(mpesaReceiptNumber: String): BookingsInfo {
-        TODO("Not yet implemented")
+    override suspend fun getBookingInfoByMpesaReceiptNumber(mpesaReceiptNumber: String): BookingsInfo? {
+        return bookingsInfoCollection.find(BookingsInfo::bookingId eq mpesaReceiptNumber).first()
     }
+
 }
