@@ -4,12 +4,14 @@ import ipsum_amet.me.data.models.BookingsInfo
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.serialization.Serializable
+import me.ipsum_amet.bikeplace.data.model.BikeDropOffAddress
+import me.ipsum_amet.bikeplace.data.model.ReturnStatus
 
 @Serializable
 data class BookingsInfoDTO(
     val bookingId: String,
     val dateBookingMade: LocalDateTime,
-    var bikeDropOffLocation: String?,
+    var bikeDropOffAddress: BikeDropOffAddress?,
     val bikeLeaseActivation: LocalDateTime,
     val bikeLeaseExpiry: LocalDateTime,
     val userName:String,
@@ -17,14 +19,14 @@ data class BookingsInfoDTO(
     val bikeId: String,
     val bikeName:String,
     val amount: Double,
-    val bikeReturnStatus: String,
+    val bikeReturnStatus: ReturnStatus,
     val userPhoneNumber: Long
 )
 fun BookingsInfoDTO.toBookingsInfo(): BookingsInfo {
     return BookingsInfo(
         bookingId,
         dateBookingMade.toJavaLocalDateTime(),
-        bikeDropOffLocation,
+        bikeDropOffAddress,
         bikeLeaseActivation.toJavaLocalDateTime(),
         bikeLeaseExpiry.toJavaLocalDateTime(),
         userName,

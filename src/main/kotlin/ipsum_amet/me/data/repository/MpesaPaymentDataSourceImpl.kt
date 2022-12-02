@@ -2,6 +2,7 @@ package ipsum_amet.me.data.repository
 import ipsum_amet.me.data.models.BookingsInfo
 import ipsum_amet.me.data.remote.dtos.requests.mpesa.MpesaExternalSTKPushRequest
 import ipsum_amet.me.data.remote.dtos.responses.mpesa.MpesaSTKPushAsyncResponse
+import kotlinx.datetime.toJavaLocalDateTime
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
@@ -26,15 +27,23 @@ class MpesaPaymentDataSourceImpl(
                     mpesaSTKPushAsyncResponse.body.stkCallback.callbackMetadata.item[3].value!!,
                     DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
                 ),
-                bikeDropOffLocation = mpesaExternalSTKPushRequest.bikeDropOffLocation,
-                bikeLeaseActivation = LocalDateTime.parse(
+                bikeDropOffAddress = mpesaExternalSTKPushRequest.bikeDropOffLocation,
+                bikeLeaseActivation =  mpesaExternalSTKPushRequest.bikeLeaseActivation.toJavaLocalDateTime(),
+                /*
+                LocalDateTime.parse(
                     mpesaExternalSTKPushRequest.bikeLeaseActivation,
                     DateTimeFormatter.ofPattern("yyyyMMddHHmm")
                 ),
-                bikeLeaseExpiry = LocalDateTime.parse(
+
+                 */
+                bikeLeaseExpiry = mpesaExternalSTKPushRequest.bikeLeaseExpiry.toJavaLocalDateTime(),
+                /*
+                LocalDateTime.parse(
                     mpesaExternalSTKPushRequest.bikeLeaseExpiry,
                     DateTimeFormatter.ofPattern("yyyyMMddHHmm")
                 ),
+
+                 */
                 userName = mpesaExternalSTKPushRequest.userName,
                 userId = mpesaExternalSTKPushRequest.userId,
                 bikeId = mpesaExternalSTKPushRequest.bikeId,
@@ -52,15 +61,22 @@ class MpesaPaymentDataSourceImpl(
                             mpesaSTKPushAsyncResponse.body.stkCallback.callbackMetadata.item[3].value!!,
                             DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
                         ),
-                    bikeDropOffLocation = mpesaExternalSTKPushRequest.bikeDropOffLocation,
-                    bikeLeaseActivation = LocalDateTime.parse(
+                    bikeDropOffAddress = mpesaExternalSTKPushRequest.bikeDropOffLocation,
+                    bikeLeaseActivation = mpesaExternalSTKPushRequest.bikeLeaseActivation.toJavaLocalDateTime(),
+                    /*
+                    LocalDateTime.parse(
                         mpesaExternalSTKPushRequest.bikeLeaseActivation,
                         DateTimeFormatter.ofPattern("yyyyMMddHHmm")
                     ),
-                    bikeLeaseExpiry = LocalDateTime.parse(
+
+                     */
+                    bikeLeaseExpiry = mpesaExternalSTKPushRequest.bikeLeaseExpiry.toJavaLocalDateTime(),
+                    /*LocalDateTime.parse(
                         mpesaExternalSTKPushRequest.bikeLeaseExpiry,
                         DateTimeFormatter.ofPattern("yyyyMMddHHmm")
                     ),
+
+                     */
                     userName = mpesaExternalSTKPushRequest.userName,
                     userId = mpesaExternalSTKPushRequest.userId,
                     bikeId = mpesaExternalSTKPushRequest.bikeId,

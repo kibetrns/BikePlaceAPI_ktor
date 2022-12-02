@@ -15,14 +15,17 @@ import ipsum_amet.me.service.BookingsInfoService
 fun Route.retrieveUserBookingsInfo(application: Application, bookingsInfoService: BookingsInfoService) {
     get("api/v1/user-bookings-info") {
 
-        val request = call.receive<BookingsInfoRequest>()
+        //val request = call.receive<BookingsInfoRequest>()
+        val userId = call.request.queryParameters["userId"] ?: ""
 
-        application.log.debug(request.toString())
+        //application.log.debug(request.toString())
+        application.log.debug(userId)
 
         try {
             call.respond(
                 HttpStatusCode.OK,
-                bookingsInfoService.getBookingInfoByUser(request.userId)
+                //bookingsInfoService.getBookingInfoByUser(request.userId)
+                bookingsInfoService.getBookingInfoByUser(userId)
             )
         } catch (ex: Exception) {
             application.log.error(ex.localizedMessage)
@@ -38,16 +41,24 @@ fun Route.retrieveUserBookingsInfo(application: Application, bookingsInfoService
 fun Route.retrieveBookingsInfoById(application: Application, bookingsInfoService: BookingsInfoService) {
     get("api/v1/bookings-info-by-receipt-id") {
 
-        val request = call.receive<BookingsInfoRequest>()
+        //val request = call.receive<BookingsInfoRequest>()
+        val receiptId = call.request.queryParameters["receiptId"] ?: ""
 
-        application.log.debug(request.toString())
+        //application.log.debug(request.toString())
+        application.log.debug(receiptId)
 
         try {
             call.respond(
                 HttpStatusCode.OK,
-                bookingsInfoService.getBookingInfoByMpesaReceiptNumber(request.mpesaReceiptNumber)!!
+                //bookingsInfoService.getBookingInfoByMpesaReceiptNumber(request.mpesaReceiptNumber)!!
+
+                /*
+                Revisit the logic of the line below in regards to NPE
+                */
+                bookingsInfoService.getBookingInfoByMpesaReceiptNumber(receiptId)!!
             )
-            application.log.debug(bookingsInfoService.getBookingInfoByMpesaReceiptNumber(request.mpesaReceiptNumber).toString())
+            //application.log.debug(bookingsInfoService.getBookingInfoByMpesaReceiptNumber(request.mpesaReceiptNumber).toString())
+            application.log.debug(bookingsInfoService.getBookingInfoByMpesaReceiptNumber(receiptId).toString())
         } catch (ex: Exception) {
             application.log.error(ex.localizedMessage)
             application.log.error(ex.stackTraceToString())

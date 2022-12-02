@@ -4,6 +4,8 @@ package ipsum_amet.me.data.remote.dtos.requests.mpesa
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.ipsum_amet.bikeplace.data.model.BikeDropOffAddress
+import me.ipsum_amet.bikeplace.data.model.ReturnStatus
 
 @Serializable
 data class MpesaExternalSTKPushRequest(
@@ -12,11 +14,11 @@ data class MpesaExternalSTKPushRequest(
     @SerialName("UserPhoneNumber")
     val userPhoneNumber: Long,
     @SerialName("BikeDropOffLocation")
-    val bikeDropOffLocation: String?,
+    val bikeDropOffLocation: BikeDropOffAddress?,
     @SerialName("BikeLeaseActivation")
-    val bikeLeaseActivation: String,
+    val bikeLeaseActivation: LocalDateTime,
     @SerialName("BikeLeaseExpiry")
-    val bikeLeaseExpiry: String,
+    val bikeLeaseExpiry: LocalDateTime,
     @SerialName("UserName")
     val userName: String,
     @SerialName("UserId")
@@ -26,5 +28,5 @@ data class MpesaExternalSTKPushRequest(
     @SerialName("BikeName")
     val bikeName: String,
     @SerialName("BikeReturnStatus")
-    val bikeReturnStatus: String
+    val bikeReturnStatus: ReturnStatus
 )

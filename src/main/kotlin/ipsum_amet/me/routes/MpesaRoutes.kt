@@ -23,13 +23,17 @@ suspend fun updateExternalSTKPushRequest1(externalSTKPushRequest: MpesaExternalS
 fun Route.retrieveAuthToken(mPesaService: MpesaService, application: Application) {
 
     get("api/v1/mobile-payment/saf/retrieve-auth-token") {
+        println("******** Mpesa Retrieve Auth. Token ********")
 
         try {
             call.respond(HttpStatusCode.OK, mPesaService.retrieveMpesaAuthToken())
         } catch (ex: Exception) {
             application.log.error(ex.localizedMessage)
         }
+
+        println("******** Mpesa Retrieve Auth. Token ********")
     }
+
 
     get("posts") {
         call.respond(HttpStatusCode.OK, mPesaService.getPosts())
@@ -38,6 +42,8 @@ fun Route.retrieveAuthToken(mPesaService: MpesaService, application: Application
 
 fun Route.retrieveRegistrationUrl(application: Application, mPesaService: MpesaService) {
     post("api/v1/mobile-payment/saf/register-URL") {
+        println("******** Mpesa Retrieve Register URL ********")
+
         val registerUrlRequest = MpesaRegisterUrlRequest(
             confirmationURL = application.environment.config.property("mpesa.daraja.confirmation-URL").getString(),
             responseType = application.environment.config.property("mpesa.daraja.response-type").getString(),
@@ -49,6 +55,8 @@ fun Route.retrieveRegistrationUrl(application: Application, mPesaService: MpesaS
         } catch (ex: Exception) {
             application.log.error(ex.stackTraceToString())
         }
+
+        println("******** Mpesa Retrieve Register URL ********")
     }
 }
 
@@ -56,6 +64,7 @@ fun Route.retrieveRegistrationUrl(application: Application, mPesaService: MpesaS
 
 fun Route.mpesaExpressTransactionRequest(application: Application, mPesaService: MpesaService) {
     post("api/v1/mobile-payment/saf/stk-transaction-request") {
+        println("******** Mpesa Express Transaction Request URL ********")
 
         val externalMpesaRequest = call.receive<MpesaExternalSTKPushRequest>()
 
@@ -89,6 +98,8 @@ fun Route.mpesaExpressTransactionRequest(application: Application, mPesaService:
             application.log.error(ex.localizedMessage)
             application.log.error(ex.stackTraceToString())
         }
+
+        println("******** Mpesa Express Transaction Request URL ********")
     }
 }
 
@@ -122,6 +133,8 @@ fun Route.acknowledgeMpesaExpressResponse(application: Application, mPesaService
             application.log.error(ex.stackTraceToString())
         }
     }
+    println("******** Mpesa Express Async. Response ********")
+
 }
 
 
