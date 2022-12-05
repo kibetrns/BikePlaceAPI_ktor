@@ -48,6 +48,7 @@ class MpesaPaymentDataSourceImpl(
                 userId = mpesaExternalSTKPushRequest.userId,
                 bikeId = mpesaExternalSTKPushRequest.bikeId,
                 bikeName = mpesaExternalSTKPushRequest.bikeName,
+                bikeType = mpesaExternalSTKPushRequest.bikeType,
                 amount = mpesaSTKPushAsyncResponse.body.stkCallback.callbackMetadata.item[0].value!!.toDouble(),
                 bikeReturnStatus = mpesaExternalSTKPushRequest.bikeReturnStatus,
                 userPhoneNumber = mpesaExternalSTKPushRequest.userPhoneNumber
@@ -81,6 +82,7 @@ class MpesaPaymentDataSourceImpl(
                     userId = mpesaExternalSTKPushRequest.userId,
                     bikeId = mpesaExternalSTKPushRequest.bikeId,
                     bikeName = mpesaExternalSTKPushRequest.bikeName,
+                    bikeType = mpesaExternalSTKPushRequest.bikeType,
                     amount = mpesaSTKPushAsyncResponse.body.stkCallback.callbackMetadata.item[0].value!!.toDouble(),
                     bikeReturnStatus = mpesaExternalSTKPushRequest.bikeReturnStatus,
                     userPhoneNumber = mpesaExternalSTKPushRequest.userPhoneNumber

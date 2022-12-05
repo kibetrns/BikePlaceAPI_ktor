@@ -1,6 +1,7 @@
 package ipsum_amet.me.data.remote.dtos.responses
 
 import ipsum_amet.me.data.models.BookingsInfo
+import ipsum_amet.me.data.models.TYPE
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.serialization.Serializable
@@ -18,6 +19,7 @@ data class BookingsInfoDTO(
     val userId: String,
     val bikeId: String,
     val bikeName:String,
+    val bikeType: TYPE,
     val amount: Double,
     val bikeReturnStatus: ReturnStatus,
     val userPhoneNumber: Long
@@ -33,6 +35,7 @@ fun BookingsInfoDTO.toBookingsInfo(): BookingsInfo {
         userId,
         bikeId,
         bikeName,
+        bikeType,
         amount,
         bikeReturnStatus,
         userPhoneNumber

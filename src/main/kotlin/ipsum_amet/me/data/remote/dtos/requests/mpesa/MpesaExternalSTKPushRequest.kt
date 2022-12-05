@@ -1,6 +1,7 @@
 package ipsum_amet.me.data.remote.dtos.requests.mpesa
 
 
+import ipsum_amet.me.data.models.TYPE
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -27,6 +28,8 @@ data class MpesaExternalSTKPushRequest(
     val bikeId: String,
     @SerialName("BikeName")
     val bikeName: String,
+    @SerialName("BikeType")
+    val bikeType: TYPE,
     @SerialName("BikeReturnStatus")
     val bikeReturnStatus: ReturnStatus
 )

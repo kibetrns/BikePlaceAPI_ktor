@@ -17,6 +17,7 @@ data class BookingsInfo(
     val userId: String,
     val bikeId: String,
     val bikeName:String,
+    val bikeType: TYPE,
     val amount: Double,
     val bikeReturnStatus: ReturnStatus,
     val userPhoneNumber: Long
@@ -32,6 +33,7 @@ fun BookingsInfo.toDTO() : BookingsInfoDTO {
         userId,
         bikeId,
         bikeName,
+        bikeType,
         amount,
         bikeReturnStatus,
         userPhoneNumber,

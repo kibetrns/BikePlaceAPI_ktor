@@ -24,9 +24,12 @@ fun Application.configureRouting() {
         acknowledgeMpesaExpressResponse(application, mPesaService)
         retrieveUserBookingsInfo(application, bookingsInfoService)
         retrieveBookingsInfoById(application, bookingsInfoService)
+        retrieveAllBookingsInfo(application, bookingsInfoService)
+        updateBookingInfo(application, bookingsInfoService)
 
 
         //retrieveAirtelMoneyAuthToken(airtelMoneyService, application)
+
 
         trial()
     }
