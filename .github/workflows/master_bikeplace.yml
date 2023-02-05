@@ -52,4 +52,4 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_62BCCDB06DE04F70A9401CDD839A9F96 }}
           package: '*.jar'
-      - task: PublishBuildArtifacts@1
+          task: PublishBuildArtifacts@1
